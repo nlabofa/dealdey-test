@@ -1,4 +1,4 @@
-export { InitDeals, LoadMoreDeals } from "./cartActions";
+export { InitDeals, LoadMoreDeals, FetchDealsDetais } from "./cartActions";
 
 export {
   BigLoaderStart,

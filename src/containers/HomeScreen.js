@@ -94,6 +94,7 @@ class HomeScreen extends Component {
             renderItem={({ item }) => (
               <DealCard
                 key={item.id}
+                fetchDetails={() => this.props.FetchDealsDetails(item.id)}
                 img={item.image}
                 title={item.short_title}
                 listPrice={item.least_priced_variant.list_price}
@@ -138,7 +139,8 @@ const mapStateToprops = state => {
 const mapDispatchToProps = dispatch => {
   return {
     InitDeals: () => dispatch(actions.InitDeals()),
-    LoadMoreDeals: page => dispatch(actions.LoadMoreDeals(page))
+    LoadMoreDeals: page => dispatch(actions.LoadMoreDeals(page)),
+    FetchDealsDetails: id => dispatch(actions.FetchDealsDetais(id))
   };
 };
 export default connect(

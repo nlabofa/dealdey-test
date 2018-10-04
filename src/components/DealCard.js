@@ -1,9 +1,23 @@
 import React from "react";
-import { Text, View, StyleSheet, Image, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity
+} from "react-native";
 import testImage from "../assets/img/flix.png";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const dealcard = ({ img, title, listPrice, discountedPrice, location }) => {
+const dealcard = ({
+  img,
+  title,
+  listPrice,
+  discountedPrice,
+  location,
+  fetchDetails
+}) => {
   const {
     cardView,
     testImageStyle,
@@ -16,7 +30,7 @@ const dealcard = ({ img, title, listPrice, discountedPrice, location }) => {
   } = styles;
   let smallLoader = <ActivityIndicator size="large" color="red" />;
   return (
-    <View style={cardView}>
+    <TouchableOpacity onPress={fetchDetails} style={cardView}>
       <Image
         source={{ uri: img }}
         resizeMode="contain"
@@ -33,7 +47,7 @@ const dealcard = ({ img, title, listPrice, discountedPrice, location }) => {
         <Icon name="md-pin" size={30} color="#666666" />
         <Text style={locationText}>{location}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

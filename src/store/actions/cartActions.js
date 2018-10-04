@@ -1,5 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import { Actions } from "react-native-router-flux";
+
 import {
   BigLoaderStart,
   BigLoaderStop,
@@ -20,6 +22,13 @@ export const MoreDeals = data => {
     type: actionTypes.MORE_DEALS_LOADED,
     moredeals: data
   };
+};
+export const DealsDetailsSuccess = (dispatch, data) => {
+  dispatch({
+    type: actionTypes.DEAL_DETAIL_LOADED,
+    dealdetail: data
+  });
+  Actions.dealdetail({ dealdetail: data });
 };
 export const InitDeals = () => {
   return dispatch => {
@@ -55,6 +64,24 @@ export const LoadMoreDeals = page => {
         dispatch(DealLoaderStop());
         console.log(err);
         console.log(err.response.data.message);
+        alert("An error occured");
+      });
+  };
+};
+export const FetchDealsDetais = id => {
+  return dispatch => {
+    dispatch(BigLoaderStart());
+    axios
+      .get(`${apiURL}/deals/${id}?access_key=${apiKey}`)
+      .then(response => {
+        dispatch(BigLoaderStop());
+        console.log(response);
+        DealsDetailsSuccess(dispatch, response.data.deal);
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err);
+        // console.log(err.response.data.message);
         alert("An error occured");
       });
   };
