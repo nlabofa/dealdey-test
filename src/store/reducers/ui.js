@@ -3,7 +3,8 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
 
 const initialState = {
-  largeloading: false
+  largeloading: false,
+  loadingmoredeals: false
 };
 
 const BigLoaderStart = state => {
@@ -12,6 +13,12 @@ const BigLoaderStart = state => {
 const BigLoaderStop = state => {
   return updateObject(state, { largeloading: false });
 };
+const DealLoaderStart = state => {
+  return updateObject(state, { loadingmoredeals: true });
+};
+const DealLoaderStop = state => {
+  return updateObject(state, { loadingmoredeals: false });
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -19,6 +26,10 @@ const reducer = (state = initialState, action) => {
       return BigLoaderStart(state);
     case actionTypes.BIG_LOADER_STOP:
       return BigLoaderStop(state);
+    case actionTypes.LOADING_MORE_DEALS_START:
+      return DealLoaderStart(state);
+    case actionTypes.LOADING_MORE_DEALS_STOP:
+      return DealLoaderStop(state);
     default:
       return state;
   }

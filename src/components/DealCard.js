@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
   priceView: {
     flexDirection: "row",
     paddingHorizontal: 10,
-    paddingTop: 10
+    paddingTop: 10,
+    flexWrap: "wrap"
   },
   priceText: {
     color: "#2bac46",

@@ -10,3 +10,13 @@ export const BigLoaderStop = () => {
     type: actionTypes.BIG_LOADER_STOP
   };
 };
+export const DealLoaderStart = () => {
+  return {
+    type: actionTypes.LOADING_MORE_DEALS_START
+  };
+};
+export const DealLoaderStop = () => {
+  return {
+    type: actionTypes.LOADING_MORE_DEALS_STOP
+  };
+};

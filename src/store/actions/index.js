@@ -1,3 +1,8 @@
-export { InitDeals } from "./cartActions";
+export { InitDeals, LoadMoreDeals } from "./cartActions";
 
-export { BigLoaderStart, BigLoaderStop } from "./uiActions";
+export {
+  BigLoaderStart,
+  BigLoaderStop,
+  DealLoaderStart,
+  DealLoaderStop
+} from "./uiActions";

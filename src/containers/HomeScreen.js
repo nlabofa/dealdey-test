@@ -4,11 +4,56 @@ import { connect } from "react-redux";
 import * as actions from "../store/actions/index";
 import DealCard from "../components/DealCard";
 import { ProgressBar } from "../components/common/index";
+console.disableYellowBox = true;
 class HomeScreen extends Component {
+  state = {
+    page: 1,
+    dealsdata: null
+  };
   componentDidMount() {
     this.props.InitDeals();
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.dealsdata !== null) {
+      this.setState({ dealsdata: nextProps.dealsdata });
+    }
+    if (
+      nextProps.moredealsdata !== null &&
+      nextProps.moredealsdata !== this.props.moredealsdata
+    ) {
+      this.setState({
+        dealsdata: [...this.state.dealsdata, ...nextProps.moredealsdata]
+      });
+    }
+  }
+  renderFooter = () => {
+    if (this.props.largeloading) return null;
 
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center"
+        }}
+      >
+        <ProgressBar sizeL="large" />
+      </View>
+    );
+  };
+  handleLoadMore = () => {
+    console.log("end reached..loading more..");
+    this.setState(
+      {
+        page: this.state.page + 1
+      },
+      () => {
+        this.props.LoadMoreDeals(this.state.page);
+      }
+    );
+  };
+  handleRefresh = () => {
+    this.props.InitDeals();
+  };
   render() {
     const { container, progressBar } = styles;
     let dealsdata = null;
@@ -17,8 +62,8 @@ class HomeScreen extends Component {
         console.log(item.short_title)
       );
     }*/
-    if (this.props.dealsdata !== null) {
-      dealsdata = this.props.dealsdata.deals;
+    if (this.state.dealsdata !== null) {
+      dealsdata = this.state.dealsdata;
     }
     return this.props.largeloading ? (
       <View style={progressBar}>
@@ -32,6 +77,7 @@ class HomeScreen extends Component {
             data={dealsdata}
             renderItem={({ item }) => (
               <DealCard
+                key={item.id}
                 img={item.image}
                 title={item.short_title}
                 listPrice={item.least_priced_variant.list_price}
@@ -40,6 +86,11 @@ class HomeScreen extends Component {
               />
             )}
             keyExtractor={item => item.id}
+            ListFooterComponent={this.renderFooter}
+            refreshing={this.props.largeloading}
+            onRefresh={this.handleRefresh}
+            onEndReached={this.handleLoadMore}
+            onEndReachedThreshold={0.1}
           />
         </View>
       </View>
@@ -62,12 +113,15 @@ const styles = StyleSheet.create({
 const mapStateToprops = state => {
   return {
     dealsdata: state.cart.deals,
-    largeloading: state.ui.largeloading
+    moredealsdata: state.cart.moredeals,
+    largeloading: state.ui.largeloading,
+    loadingmoredeals: state.ui.loadingmoredeals
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    InitDeals: () => dispatch(actions.InitDeals())
+    InitDeals: () => dispatch(actions.InitDeals()),
+    LoadMoreDeals: page => dispatch(actions.LoadMoreDeals(page))
   };
 };
 export default connect(
