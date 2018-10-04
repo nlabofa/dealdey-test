@@ -3,8 +3,10 @@ import { Text, View, StyleSheet, Image, FlatList } from "react-native";
 import { connect } from "react-redux";
 import * as actions from "../store/actions/index";
 import DealCard from "../components/DealCard";
-import { ProgressBar } from "../components/common/index";
+import { ProgressBar, Header } from "../components/common/index";
+import Icon from "react-native-vector-icons/Ionicons";
 console.disableYellowBox = true;
+
 class HomeScreen extends Component {
   state = {
     page: 1,
@@ -26,6 +28,11 @@ class HomeScreen extends Component {
       });
     }
   }
+  renderHeader = () => {
+    return (
+      <Header leftContent={this.leftContent} rightContent={this.rightContent} />
+    );
+  };
   renderFooter = () => {
     if (this.props.largeloading) return null;
 
@@ -57,6 +64,8 @@ class HomeScreen extends Component {
   render() {
     const { container, progressBar } = styles;
     let dealsdata = null;
+    this.leftContent = <Text />;
+    this.rightContent = <Icon name="ios-cart" size={30} />;
     /*if (this.props.dealsdata !== null) {
       dealsdata = this.props.dealsdata.deals.map(item =>
         console.log(item.short_title)
@@ -86,6 +95,7 @@ class HomeScreen extends Component {
               />
             )}
             keyExtractor={item => item.id}
+            ListHeaderComponent={this.renderHeader}
             ListFooterComponent={this.renderFooter}
             refreshing={this.props.largeloading}
             onRefresh={this.handleRefresh}
