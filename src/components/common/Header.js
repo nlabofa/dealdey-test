@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 
 // Make a component
-const Header = ({ leftContent, rightContent }) => {
+const HeaderComponent = ({ leftContent, rightContent }) => {
   const { textStyle, viewStyle } = styles;
 
   return (
@@ -35,4 +35,4 @@ const styles = {
 };
 
 // Make the component available to other parts of the app
-export { Header };
+export default HeaderComponent;
