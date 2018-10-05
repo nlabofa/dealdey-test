@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as actions from "../store/actions/index";
 import DealCard from "../components/DealCard";
 import { ProgressBar } from "../components/common/index";
-import HeaderComponent from "../components/common/Header";
+import HeaderComponent from "../components/Header";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
 import Icon from "react-native-vector-icons/Ionicons";
 console.disableYellowBox = true;

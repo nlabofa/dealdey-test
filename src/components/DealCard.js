@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap"
   },
   priceText: {
-    color: "#2bac46",
+    color: "#29a981",
     fontSize: 18,
     paddingRight: 16,
     fontWeight: "bold"

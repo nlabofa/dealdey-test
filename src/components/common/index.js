@@ -1,2 +1,2 @@
 export * from "./ProgressBar";
-export * from "./Header";
+export * from "./Button";
