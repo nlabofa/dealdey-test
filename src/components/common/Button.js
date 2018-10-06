@@ -1,13 +1,18 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 
-const Button = ({ onPress, children, color }) => {
+const Button = ({ onPress, children, color, fullwidth }) => {
   const { buttonStyle, textStyle } = styles;
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[buttonStyle, { backgroundColor: color }]}
+      style={[
+        buttonStyle,
+        fullwidth
+          ? { width: "100%", backgroundColor: color }
+          : { width: "45%", backgroundColor: color }
+      ]}
     >
       <Text style={textStyle}>{children}</Text>
     </TouchableOpacity>
@@ -22,10 +27,9 @@ const styles = {
     textTransform: "uppercase"
   },
   buttonStyle: {
-    height: "70%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
-    width: "45%",
     borderRadius: 3,
     borderWidth: 1,
     borderColor: "transparent"

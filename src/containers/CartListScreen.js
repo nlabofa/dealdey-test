@@ -1,72 +1,90 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  ScrollView
+} from "react-native";
 import testImage from "../assets/img/flix.png";
 import HeaderComponent from "../components/Header";
+import ListCard from "../components/ListCard";
 import { Button } from "../components/common";
+import { Actions } from "react-native-router-flux";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
 
 class CartListScreen extends Component {
+  renderFooter = () => {
+    return (
+      <View
+        style={{
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE"
+        }}
+      />
+    );
+  };
   render() {
     const {
       container,
       containerFill,
-      sliderDiv,
-      productName,
-      dealInfo,
-      amountView,
-      strikeText,
       priceText,
-      discountText,
       normText,
-      bottomHeader
+      normLText,
+      bottomHeader,
+      underlineText,
+      subTotalView
     } = styles;
-    this.leftContent = <Text />;
-    this.rightContent = (
-      <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
+    const { cartdetail } = this.props;
+    this.leftContent = (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center"
+        }}
+      >
+        <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
+        <Text style={[normText, { paddingLeft: 10 }]}>Cart</Text>
+      </View>
     );
-    //const { dealdetail } = this.props;
+    this.rightContent = <Text style={underlineText}>continue shopping</Text>;
     return (
       <View style={containerFill}>
         <HeaderComponent
           leftContent={this.leftContent}
           rightContent={this.rightContent}
+          rightClick={() => Actions.popTo("homescreen")}
         />
-        <View style={container}>
-          <View style={sliderDiv}>
-            <Image
-              source={testImage}
-              style={{
-                width: "90%",
-                height: "100%"
-              }}
-              loadingIndicatorSource={testImage}
-              defaultSource={testImage}
-              resizeMode="cover"
-            />
-          </View>
-          <Text style={productName}>text</Text>
-        </View>
-        <View style={dealInfo}>
-          <View style={amountView}>
-            <Text style={strikeText}>texr</Text>
-            <Text style={priceText}>ffff</Text>
-          </View>
-          <View style={amountView}>
-            <Text style={normText}>Discount</Text>
-            <Text style={discountText}>trrt</Text>
-          </View>
-          <View style={amountView}>
-            <Text style={normText}>You save</Text>
-            <Text style={discountText}>gggg</Text>
-          </View>
-          <View style={amountView}>
-            <Text style={normText}>sold</Text>
-            <Text style={normText}>jghg</Text>
-          </View>
-        </View>
+        <ScrollView style={container}>
+          <FlatList
+            data={cartdetail.cart.cart_items}
+            renderItem={({ item }) => (
+              <ListCard
+                key={item.id}
+                img={item.image_for_cart}
+                quantity={item.quantity}
+                title={item.deal.short_title}
+                listPrice={item.unit_price}
+              />
+            )}
+            keyExtractor={item => item.deal.short_title}
+            ListFooterComponent={this.renderFooter}
+          />
+        </ScrollView>
+
         <View style={bottomHeader}>
-          <Button color="#e25902">Buy now</Button>
-          <Button color="#d0d0d0">add to cart</Button>
+          <View style={subTotalView}>
+            <Text style={normLText}>SUB TOTAL</Text>
+            <Text style={priceText}>
+              {"  N" + " " + cartdetail.cart.cart_sub_total}
+            </Text>
+          </View>
+          <Button fullwidth color="#e25902">
+            proceed to checkout
+          </Button>
         </View>
       </View>
     );
@@ -79,42 +97,7 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   container: {
-    paddingHorizontal: "5%"
-  },
-  sliderDiv: {
-    borderWidth: 1,
-    borderColor: "transparent",
-    flexDirection: "row",
-    position: "relative",
-    justifyContent: "center",
-    width: "100%",
-    height: 170
-    //backgroundColor: "red"
-  },
-  productName: {
-    color: "black",
-    fontSize: 18,
-    marginTop: 20,
-    fontWeight: "500"
-  },
-  dealInfo: {
-    backgroundColor: "#e8e8e8",
-    height: 60,
-    flexDirection: "row",
-    paddingHorizontal: "5%",
-    marginTop: 20,
-    justifyContent: "space-between"
-  },
-  amountView: {
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center"
-  },
-  strikeText: {
-    textDecorationLine: "line-through",
-    textDecorationStyle: "solid",
-    color: "black",
-    fontSize: 18
+    paddingHorizontal: "2%"
   },
   normText: {
     color: "black",
@@ -122,16 +105,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textTransform: "uppercase"
   },
+  normLText: {
+    color: "black",
+    fontWeight: "500",
+    fontSize: 18,
+    textTransform: "uppercase"
+  },
+  underlineText: {
+    color: "black",
+    fontWeight: "500",
+    fontSize: 18,
+    textDecorationLine: "underline"
+  },
+  subTotalView: {
+    flexDirection: "row",
+    justifyContent: "flex-end"
+  },
   priceText: {
     color: "#29a981",
     fontSize: 18,
     fontWeight: "bold"
-  },
-  discountText: {
-    color: "#bd2a2a",
-    fontWeight: "500",
-    fontSize: 14,
-    textTransform: "uppercase"
   },
   bottomHeader: {
     backgroundColor: "white",
@@ -141,10 +134,9 @@ const styles = StyleSheet.create({
     elevation: 2,
     position: "absolute",
     bottom: 0,
-    height: 70,
-    flexDirection: "row",
+    minHeight: 90,
+    flexDirection: "column",
     justifyContent: "space-around",
-    alignItems: "center",
     width: "100%"
   }
 });

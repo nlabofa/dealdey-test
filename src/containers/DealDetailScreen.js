@@ -22,12 +22,10 @@ class DealDetailScreen extends Component {
       discountText,
       normText,
       bottomHeader,
-      progressBar
+      progressBar,
+      headercompview,
+      cartNo
     } = styles;
-    this.leftContent = <Text />;
-    this.rightContent = (
-      <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
-    );
     const {
       dealdetail,
       cartdetail,
@@ -35,6 +33,20 @@ class DealDetailScreen extends Component {
       largeloading,
       variantdetail
     } = this.props;
+    this.leftContent = <Text />;
+    this.rightContent = (
+      <View style={headercompview}>
+        <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
+        {cartdetail !== null && cartdetail.cart.cart_items_count !== null ? (
+          <View style={cartNo}>
+            <Text style={{ padding: 5, textAlign: "center", color: "white" }}>
+              {cartdetail.cart.cart_items_count}
+            </Text>
+          </View>
+        ) : null}
+      </View>
+    );
+
     const variant_id =
       dealdetail.variants_have_same_price == true
         ? dealdetail.master_variant_id
@@ -182,6 +194,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%"
+  },
+  headercompview: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative"
+  },
+  cartNo: {
+    position: "absolute",
+    top: -10,
+    left: -29,
+    borderRadius: 50,
+    width: 30,
+    backgroundColor: "#bd2a2a"
   }
 });
 const mapStateToprops = state => {

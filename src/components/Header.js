@@ -1,14 +1,14 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 
 // Make a component
-const HeaderComponent = ({ leftContent, rightContent }) => {
+const HeaderComponent = ({ leftContent, rightContent, rightClick }) => {
   const { textStyle, viewStyle } = styles;
 
   return (
     <View style={viewStyle}>
       {leftContent}
-      {rightContent}
+      <TouchableOpacity onPress={rightClick}>{rightContent}</TouchableOpacity>
     </View>
   );
 };

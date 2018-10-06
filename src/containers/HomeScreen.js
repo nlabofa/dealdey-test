@@ -78,11 +78,21 @@ class HomeScreen extends Component {
     }
   };
   render() {
-    const { container, progressBar } = styles;
+    const { container, progressBar, headercompview, cartNo } = styles;
+    const { cartdetail } = this.props;
     let dealsdata = null;
     this.leftContent = <Text />;
     this.rightContent = (
-      <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
+      <View style={headercompview}>
+        <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
+        {cartdetail !== null && cartdetail.cart.cart_items_count ? (
+          <View style={cartNo}>
+            <Text style={{ padding: 5, textAlign: "center", color: "white" }}>
+              {cartdetail.cart.cart_items_count}
+            </Text>
+          </View>
+        ) : null}
+      </View>
     );
     /*if (this.props.dealsdata !== null) {
       dealsdata = this.props.dealsdata.deals.map(item =>
@@ -142,12 +152,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
+  },
+  headercompview: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative"
+  },
+  cartNo: {
+    position: "absolute",
+    top: -10,
+    left: -29,
+    borderRadius: 50,
+    width: 30,
+    backgroundColor: "#bd2a2a"
   }
 });
 const mapStateToprops = state => {
   return {
     dealsdata: state.cart.deals,
     moredealsdata: state.cart.moredeals,
+    cartdetail: state.cart.cartdetail,
     largeloading: state.ui.largeloading,
     loadingmoredeals: state.ui.loadingmoredeals
   };
