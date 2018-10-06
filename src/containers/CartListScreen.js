@@ -10,8 +10,10 @@ import {
 } from "react-native";
 import testImage from "../assets/img/flix.png";
 import HeaderComponent from "../components/Header";
+import { connect } from "react-redux";
+import * as actions from "../store/actions/index";
 import ListCard from "../components/ListCard";
-import { Button } from "../components/common";
+import { Button, ProgressBar } from "../components/common";
 import { Actions } from "react-native-router-flux";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
 
@@ -36,9 +38,10 @@ class CartListScreen extends Component {
       normLText,
       bottomHeader,
       underlineText,
-      subTotalView
+      subTotalView,
+      progressBar
     } = styles;
-    const { cartdetail } = this.props;
+    const { cartdetail, largeloading, proceedToCheckout } = this.props;
     this.leftContent = (
       <View
         style={{
@@ -51,7 +54,11 @@ class CartListScreen extends Component {
       </View>
     );
     this.rightContent = <Text style={underlineText}>continue shopping</Text>;
-    return (
+    return largeloading ? (
+      <View style={progressBar}>
+        <ProgressBar sizeL="large" />
+      </View>
+    ) : (
       <View style={containerFill}>
         <HeaderComponent
           leftContent={this.leftContent}
@@ -82,7 +89,11 @@ class CartListScreen extends Component {
               {"  N" + " " + cartdetail.cart.cart_sub_total}
             </Text>
           </View>
-          <Button fullwidth color="#e25902">
+          <Button
+            onPress={() => proceedToCheckout(cartdetail.cart.id)}
+            fullwidth
+            color="#e25902"
+          >
             proceed to checkout
           </Button>
         </View>
@@ -104,6 +115,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 14,
     textTransform: "uppercase"
+  },
+  progressBar: {
+    backgroundColor: "#f8f8f8",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   normLText: {
     color: "black",
@@ -141,4 +158,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CartListScreen;
+const mapStateToprops = state => {
+  return {
+    largeloading: state.ui.largeloading
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    //deal_id, variant_id, quantity
+    proceedToCheckout: cart_id => dispatch(actions.getCheckOutDetail(cart_id))
+  };
+};
+export default connect(
+  mapStateToprops,
+  mapDispatchToProps
+)(CartListScreen);

@@ -4,7 +4,8 @@ export {
   FetchDealsDetais,
   addItemToCart,
   createCart,
-  getDealVariant
+  getDealVariant,
+  getCheckOutDetail
 } from "./cartActions";
 
 export {

@@ -43,6 +43,13 @@ export const DealsDetailsSuccess = (dispatch, data) => {
   });
   Actions.dealdetail({ dealdetail: data });
 };
+export const checkoutDetailAction = (dispatch, data) => {
+  dispatch({
+    type: actionTypes.CHECKOUT_DETAIL_LOADED,
+    checkoutdetail: data
+  });
+  Actions.checkoutdetail({ checkoutdetail: data });
+};
 export const ItemAddedToCartSuccess = (dispatch, data) => {
   dispatch({
     type: actionTypes.ITEM_ADDED_CART_SUCCESS,
@@ -182,6 +189,23 @@ export const getDealVariant = id => {
       .catch(err => {
         console.log(err.response);
         console.log("varaint fetch error");
+        console.log(err.response.data.message);
+      });
+  };
+};
+export const getCheckOutDetail = id => {
+  return dispatch => {
+    dispatch(BigLoaderStart());
+    axios
+      .get(`${apiURL}/carts/${id}/payment_options?access_key=${apiKey}`)
+      .then(response => {
+        dispatch(BigLoaderStop());
+        console.log(response.data);
+        checkoutDetailAction(dispatch, response.data);
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err.response);
         console.log(err.response.data.message);
       });
   };
