@@ -43,6 +43,13 @@ export const DealsDetailsSuccess = (dispatch, data) => {
   });
   Actions.dealdetail({ dealdetail: data });
 };
+export const saveOrderDetail = (dispatch, data) => {
+  dispatch({
+    type: actionTypes.SAVE_ORDER_DETAIL,
+    orderdetail: data
+  });
+  Actions.defaultscreen({ orderdetail: data });
+};
 export const checkoutDetailAction = (dispatch, data) => {
   dispatch({
     type: actionTypes.CHECKOUT_DETAIL_LOADED,
@@ -205,6 +212,80 @@ export const getCheckOutDetail = id => {
       })
       .catch(err => {
         dispatch(BigLoaderStop());
+        console.log(err.response);
+        console.log(err.response.data.message);
+      });
+  };
+};
+export const completeOrder = (id, total_amount) => {
+  return dispatch => {
+    const orderData = {
+      amount: total_amount,
+      order_reference: Math.floor(Date.now() / 1000)
+    };
+    console.log(orderData);
+    axios
+      .post(`${apiURL}/carts/${id}/complete?access_key=${apiKey}`, orderData)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.success === true) {
+          dispatch(getOrderDetail(response.data.order_id));
+        }
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err.response);
+        console.log(err.response.data.message);
+      });
+  };
+};
+export const getOrderDetail = id => {
+  return dispatch => {
+    axios
+      .get(`${apiURL}/orders/${id}?access_key=${apiKey}`)
+      .then(response => {
+        dispatch(BigLoaderStop());
+        console.log(response.data);
+        saveOrderDetail(dispatch, response.data.order);
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err.response);
+        console.log(err.response.data.message);
+      });
+  };
+};
+export const createUserInfo = (
+  cart_id,
+  is_shippable,
+  total_amount,
+  firstname,
+  mobile,
+  email
+) => {
+  return dispatch => {
+    const postData = {
+      user: {
+        firstname: firstname,
+        mobile: mobile,
+        email: email
+      }
+    };
+    dispatch(BigLoaderStart());
+    axios
+      .post(`${apiURL}/carts/${cart_id}/user?access_key=${apiKey}`, postData)
+      .then(response => {
+        console.log(response.data);
+        if (is_shippable === false) {
+          console.log("proceed to order summary");
+          dispatch(completeOrder(cart_id, total_amount));
+        } else {
+          console.log("enter shipping address");
+        }
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        alert("Pls ensure you entered valid email/phone no");
         console.log(err.response);
         console.log(err.response.data.message);
       });

@@ -5,7 +5,8 @@ export {
   addItemToCart,
   createCart,
   getDealVariant,
-  getCheckOutDetail
+  getCheckOutDetail,
+  createUserInfo
 } from "./cartActions";
 
 export {

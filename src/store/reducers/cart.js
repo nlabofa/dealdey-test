@@ -7,7 +7,8 @@ const initialState = {
   dealdetail: null,
   cartdetail: null,
   variantdetail: null,
-  checkoutdetail: null
+  checkoutdetail: null,
+  orderdetail: null
 };
 
 const setDeals = (state, action) => {
@@ -43,6 +44,11 @@ const getCheckoutDetail = (state, action) => {
     checkoutdetail: action.checkoutdetail
   });
 };
+const saveOrderDetail = (state, action) => {
+  return updateObject(state, {
+    orderdetail: action.orderdetail
+  });
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -60,6 +66,8 @@ const reducer = (state = initialState, action) => {
       return ItemAddedToCart(state, action);
     case actionTypes.CHECKOUT_DETAIL_LOADED:
       return getCheckoutDetail(state, action);
+    case actionTypes.SAVE_ORDER_DETAIL:
+      return saveOrderDetail(state, action);
     default:
       return state;
   }

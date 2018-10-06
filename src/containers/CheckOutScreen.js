@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Button } from "../components/common/index";
 import HeaderComponent from "../components/Header";
+import { Actions } from "react-native-router-flux";
 class CheckOutScreen extends Component {
   render() {
     const {
@@ -46,7 +47,7 @@ class CheckOutScreen extends Component {
         <View style={bottomHeader}>
           <Button
             fullwidth
-            onPress={() => console.log("pressed")}
+            onPress={() => Actions.push("userform")}
             color="#e25902"
           >
             complete order
