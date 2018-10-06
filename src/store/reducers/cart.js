@@ -4,7 +4,9 @@ import { updateObject } from "../utility";
 const initialState = {
   deals: null,
   moredeals: null,
-  dealdetail: null
+  dealdetail: null,
+  cartdetail: null,
+  variantdetail: null
 };
 
 const setDeals = (state, action) => {
@@ -20,6 +22,21 @@ const dealDetail = (state, action) => {
     dealdetail: action.dealdetail
   });
 };
+const createCart = (state, action) => {
+  return updateObject(state, {
+    cartdetail: action.cartdetail
+  });
+};
+const ItemAddedToCart = (state, action) => {
+  return updateObject(state, {
+    cartdetail: action.cartdetail
+  });
+};
+const getDealVariant = (state, action) => {
+  return updateObject(state, {
+    variantdetail: action.variantdetail
+  });
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -29,6 +46,12 @@ const reducer = (state = initialState, action) => {
       return loadMoreDeals(state, action);
     case actionTypes.DEAL_DETAIL_LOADED:
       return dealDetail(state, action);
+    case actionTypes.CART_CREATED:
+      return createCart(state, action);
+    case actionTypes.SET_DEAL_VARIANTS:
+      return getDealVariant(state, action);
+    case actionTypes.ITEM_ADDED_CART_SUCCESS:
+      return ItemAddedToCart(state, action);
     default:
       return state;
   }

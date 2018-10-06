@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { connect } from "react-redux";
-import * as actions from "../store/actions/index";
 import testImage from "../assets/img/flix.png";
 import HeaderComponent from "../components/Header";
-import { Button, ProgressBar } from "../components/common/index";
-
+import { Button } from "../components/common";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
 
-class DealDetailScreen extends Component {
+class CartListScreen extends Component {
   render() {
     const {
       container,
@@ -21,30 +18,14 @@ class DealDetailScreen extends Component {
       priceText,
       discountText,
       normText,
-      bottomHeader,
-      progressBar
+      bottomHeader
     } = styles;
     this.leftContent = <Text />;
     this.rightContent = (
       <Image source={shoppingcartImage} style={{ width: 30, height: 30 }} />
     );
-    const {
-      dealdetail,
-      cartdetail,
-      addItemToCart,
-      largeloading,
-      variantdetail
-    } = this.props;
-    const variant_id =
-      dealdetail.variants_have_same_price == true
-        ? dealdetail.master_variant_id
-        : variantdetail.variants[0].id;
-    const cart_id = cartdetail.cart.id;
-    return largeloading ? (
-      <View style={progressBar}>
-        <ProgressBar sizeL="large" />
-      </View>
-    ) : (
+    //const { dealdetail } = this.props;
+    return (
       <View style={containerFill}>
         <HeaderComponent
           leftContent={this.leftContent}
@@ -53,7 +34,7 @@ class DealDetailScreen extends Component {
         <View style={container}>
           <View style={sliderDiv}>
             <Image
-              source={{ uri: dealdetail.main_image }}
+              source={testImage}
               style={{
                 width: "90%",
                 height: "100%"
@@ -63,40 +44,29 @@ class DealDetailScreen extends Component {
               resizeMode="cover"
             />
           </View>
-          <Text style={productName}>{dealdetail.short_title}</Text>
+          <Text style={productName}>text</Text>
         </View>
         <View style={dealInfo}>
           <View style={amountView}>
-            <Text style={strikeText}>{"N" + " " + dealdetail.list_price}</Text>
-            <Text style={priceText}>
-              {"N" + " " + dealdetail.discounted_price}
-            </Text>
+            <Text style={strikeText}>texr</Text>
+            <Text style={priceText}>ffff</Text>
           </View>
           <View style={amountView}>
             <Text style={normText}>Discount</Text>
-            <Text style={discountText}>
-              {dealdetail.percent_discount + " %off"}
-            </Text>
+            <Text style={discountText}>trrt</Text>
           </View>
           <View style={amountView}>
             <Text style={normText}>You save</Text>
-            <Text style={discountText}>{dealdetail.saving}</Text>
+            <Text style={discountText}>gggg</Text>
           </View>
           <View style={amountView}>
             <Text style={normText}>sold</Text>
-            <Text style={normText}>{dealdetail.bought_count}</Text>
+            <Text style={normText}>jghg</Text>
           </View>
         </View>
         <View style={bottomHeader}>
-          <Button onPress={() => console.log("pressed")} color="#e25902">
-            Buy now
-          </Button>
-          <Button
-            onPress={() => addItemToCart(cart_id, dealdetail.id, variant_id, 1)}
-            color="#d0d0d0"
-          >
-            add to cart
-          </Button>
+          <Button color="#e25902">Buy now</Button>
+          <Button color="#d0d0d0">add to cart</Button>
         </View>
       </View>
     );
@@ -163,12 +133,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textTransform: "uppercase"
   },
-  progressBar: {
-    backgroundColor: "#f8f8f8",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
   bottomHeader: {
     backgroundColor: "white",
     shadowColor: "#000",
@@ -184,21 +148,5 @@ const styles = StyleSheet.create({
     width: "100%"
   }
 });
-const mapStateToprops = state => {
-  return {
-    largeloading: state.ui.largeloading,
-    cartdetail: state.cart.cartdetail,
-    variantdetail: state.cart.variantdetail
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    //deal_id, variant_id, quantity
-    addItemToCart: (cart_id, deal_id, variant_id, quantity) =>
-      dispatch(actions.addItemToCart(cart_id, deal_id, variant_id, quantity))
-  };
-};
-export default connect(
-  mapStateToprops,
-  mapDispatchToProps
-)(DealDetailScreen);
+
+export default CartListScreen;

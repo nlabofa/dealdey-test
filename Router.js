@@ -2,6 +2,7 @@ import React from "react";
 import { Scene, Router, Actions } from "react-native-router-flux";
 import DefaultScreen from "./src/containers/DefaultScreen";
 import DealDetailScreen from "./src/containers/DealDetailScreen";
+import CartListScreen from "./src/containers/CartListScreen";
 import HomeScreen from "./src/containers/HomeScreen";
 const RouterComponent = () => {
   return (
@@ -18,6 +19,7 @@ const RouterComponent = () => {
           component={DealDetailScreen}
           hideNavBar="true"
         />
+        <Scene key="cartlist" component={CartListScreen} hideNavBar="true" />
       </Scene>
     </Router>
   );

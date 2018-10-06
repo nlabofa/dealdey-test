@@ -15,6 +15,7 @@ class HomeScreen extends Component {
     dealsdata: null
   };
   componentDidMount() {
+    this.props.createCart();
     this.props.InitDeals();
   }
   componentWillReceiveProps(nextProps) {
@@ -66,6 +67,16 @@ class HomeScreen extends Component {
   handleRefresh = () => {
     this.props.InitDeals();
   };
+  fetchDetails = (id, fetchVar) => {
+    if (fetchVar === 0) {
+      //variants_have_same_price is 0 i.e variants does not have same price hence we want to fetch the variant id seperately
+      this.props.getDealVariant(id);
+      this.props.FetchDealsDetails(id);
+      return;
+    } else {
+      this.props.FetchDealsDetails(id);
+    }
+  };
   render() {
     const { container, progressBar } = styles;
     let dealsdata = null;
@@ -94,7 +105,12 @@ class HomeScreen extends Component {
             renderItem={({ item }) => (
               <DealCard
                 key={item.id}
-                fetchDetails={() => this.props.FetchDealsDetails(item.id)}
+                fetchDetails={() =>
+                  this.fetchDetails(
+                    item.id,
+                    item.least_priced_variant.variants_have_same_price
+                  )
+                }
                 img={item.image}
                 title={item.short_title}
                 listPrice={item.least_priced_variant.list_price}
@@ -139,8 +155,10 @@ const mapStateToprops = state => {
 const mapDispatchToProps = dispatch => {
   return {
     InitDeals: () => dispatch(actions.InitDeals()),
+    createCart: () => dispatch(actions.createCart()),
     LoadMoreDeals: page => dispatch(actions.LoadMoreDeals(page)),
-    FetchDealsDetails: id => dispatch(actions.FetchDealsDetais(id))
+    FetchDealsDetails: id => dispatch(actions.FetchDealsDetais(id)),
+    getDealVariant: id => dispatch(actions.getDealVariant(id))
   };
 };
 export default connect(
