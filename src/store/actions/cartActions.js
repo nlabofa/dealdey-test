@@ -48,7 +48,7 @@ export const saveOrderDetail = (dispatch, data) => {
     type: actionTypes.SAVE_ORDER_DETAIL,
     orderdetail: data
   });
-  Actions.defaultscreen({ orderdetail: data });
+  Actions.ordersuccess({ orderdetail: data });
 };
 export const checkoutDetailAction = (dispatch, data) => {
   dispatch({

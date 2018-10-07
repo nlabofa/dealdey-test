@@ -15,9 +15,6 @@ class UserForm extends Component {
   };
   render() {
     const {
-      normText,
-      detailButton,
-      detailText,
       containerFill,
       container,
       normLText,
@@ -118,29 +115,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     position: "relative"
-  },
-  subDetail: {
-    flexDirection: "column",
-    justifyContent: "space-around"
-  },
-  normText: {
-    color: "black",
-    fontWeight: "500",
-    fontSize: 14,
-    textTransform: "uppercase"
-  },
-  detailText: {
-    color: "#d0d0d0",
-    fontWeight: "bold",
-    fontSize: 14,
-    textTransform: "uppercase"
-  },
-  detailButton: {
-    borderColor: "#d0d0d0",
-    borderWidth: 1,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center"
   },
   normLText: {
     color: "black",

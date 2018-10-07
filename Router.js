@@ -6,7 +6,7 @@ import CartListScreen from "./src/containers/CartListScreen";
 import CheckOutScreen from "./src/containers/CheckOutScreen";
 import HomeScreen from "./src/containers/HomeScreen";
 import UserForm from "./src/containers/UserForm";
-import defaultscreen from "./src/containers/DefaultScreen";
+import OrderSuccess from "./src/containers/OrderSuccess";
 const RouterComponent = () => {
   return (
     <Router>
@@ -22,6 +22,7 @@ const RouterComponent = () => {
           component={DefaultScreen}
           hideNavBar="true"
         />
+        <Scene key="ordersuccess" component={OrderSuccess} hideNavBar="true" />
         <Scene
           key="dealdetail"
           component={DealDetailScreen}
