@@ -1,10 +1,12 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { Actions } from "react-native-router-flux";
-
+import { getStateName } from "../utility";
 import {
   BigLoaderStart,
   BigLoaderStop,
+  SmalLoaderStart,
+  SmalLoaderStop,
   DealLoaderStart,
   DealLoaderStop
 } from "./index";
@@ -21,6 +23,24 @@ export const MoreDeals = data => {
   return {
     type: actionTypes.MORE_DEALS_LOADED,
     moredeals: data
+  };
+};
+export const saveLocationListing = data => {
+  return {
+    type: actionTypes.SAVE_LOCATION_LIST,
+    locationlist: data
+  };
+};
+export const saveStateName = name => {
+  return {
+    type: actionTypes.SAVE_STATE_NAME,
+    statename: name
+  };
+};
+export const areaListFetched = name => {
+  return {
+    type: actionTypes.AREA_LIST_FETCHED,
+    statename: name
   };
 };
 export const createCartAction = data => {
@@ -217,6 +237,69 @@ export const getCheckOutDetail = id => {
       });
   };
 };
+export const getStateListing = () => {
+  return dispatch => {
+    dispatch(BigLoaderStart());
+    axios
+      .get(`${apiURL}/states?access_key=${apiKey}`)
+      .then(response => {
+        dispatch(BigLoaderStop());
+        console.log(response.data);
+        dispatch(saveLocationListing(response.data.states));
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err.response);
+        console.log(err.response.data.message);
+      });
+  };
+};
+export const getAreaListing = id => {
+  return dispatch => {
+    const statename = getStateName(id);
+    console.log(statename);
+    dispatch(SmalLoaderStart());
+    axios
+      .get(`${apiURL}/areas?state_id=${id}&access_key=${apiKey}`)
+      .then(response => {
+        dispatch(SmalLoaderStop());
+        console.log(response.data);
+        dispatch(saveLocationListing(response.data.areas));
+        dispatch(areaListFetched(statename));
+      })
+      .catch(err => {
+        dispatch(SmalLoaderStop());
+        console.log(err.response);
+        console.log(err.response.data.message);
+      });
+  };
+};
+export const createShippingAddress = (id, contentData, amount) => {
+  return dispatch => {
+    console.log(contentData);
+    dispatch(BigLoaderStart());
+
+    axios
+      .post(
+        `${apiURL}/carts/${id}/shipping_address?access_key=${apiKey}`,
+        contentData
+      )
+      .then(response => {
+        console.log(response.data);
+        if (response.data.success === true) {
+          dispatch(completeOrder(id, amount));
+        } else {
+          dispatch(BigLoaderStop());
+          alert(response.data.cart.error_messages);
+        }
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err.response);
+        console.log(err.response.data.message);
+      });
+  };
+};
 export const completeOrder = (id, total_amount) => {
   return dispatch => {
     const orderData = {
@@ -280,6 +363,8 @@ export const createUserInfo = (
           console.log("proceed to order summary");
           dispatch(completeOrder(cart_id, total_amount));
         } else {
+          dispatch(BigLoaderStop());
+          Actions.push("shippingform");
           console.log("enter shipping address");
         }
       })

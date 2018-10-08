@@ -6,6 +6,7 @@ import CartListScreen from "./src/containers/CartListScreen";
 import CheckOutScreen from "./src/containers/CheckOutScreen";
 import HomeScreen from "./src/containers/HomeScreen";
 import UserForm from "./src/containers/UserForm";
+import ShippingForm from "./src/containers/ShippingForm";
 import OrderSuccess from "./src/containers/OrderSuccess";
 const RouterComponent = () => {
   return (
@@ -35,6 +36,12 @@ const RouterComponent = () => {
           hideNavBar="true"
         />
         <Scene key="userform" component={UserForm} hideNavBar="true" />
+        <Scene
+          key="shippingform"
+          component={ShippingForm}
+          hideNavBar="true"
+          //initial
+        />
       </Scene>
     </Router>
   );

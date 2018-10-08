@@ -8,7 +8,10 @@ const initialState = {
   cartdetail: null,
   variantdetail: null,
   checkoutdetail: null,
-  orderdetail: null
+  orderdetail: null,
+  locationlist: null,
+  statename: null,
+  arealistfetched: false
 };
 
 const setDeals = (state, action) => {
@@ -49,6 +52,17 @@ const saveOrderDetail = (state, action) => {
     orderdetail: action.orderdetail
   });
 };
+const saveLocationList = (state, action) => {
+  return updateObject(state, {
+    locationlist: action.locationlist
+  });
+};
+const areaListFetched = (state, action) => {
+  return updateObject(state, {
+    arealistfetched: true,
+    statename: action.statename
+  });
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -68,6 +82,10 @@ const reducer = (state = initialState, action) => {
       return getCheckoutDetail(state, action);
     case actionTypes.SAVE_ORDER_DETAIL:
       return saveOrderDetail(state, action);
+    case actionTypes.SAVE_LOCATION_LIST:
+      return saveLocationList(state, action);
+    case actionTypes.AREA_LIST_FETCHED:
+      return areaListFetched(state, action);
     default:
       return state;
   }

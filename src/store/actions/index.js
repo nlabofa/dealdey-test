@@ -6,12 +6,17 @@ export {
   createCart,
   getDealVariant,
   getCheckOutDetail,
-  createUserInfo
+  createUserInfo,
+  getStateListing,
+  getAreaListing,
+  createShippingAddress
 } from "./cartActions";
 
 export {
   BigLoaderStart,
   BigLoaderStop,
+  SmalLoaderStart,
+  SmalLoaderStop,
   DealLoaderStart,
   DealLoaderStop
 } from "./uiActions";

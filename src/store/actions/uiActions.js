@@ -10,6 +10,16 @@ export const BigLoaderStop = () => {
     type: actionTypes.BIG_LOADER_STOP
   };
 };
+export const SmalLoaderStart = () => {
+  return {
+    type: actionTypes.SMALL_LOADER_START
+  };
+};
+export const SmalLoaderStop = () => {
+  return {
+    type: actionTypes.SMALL_LOADER_STOP
+  };
+};
 export const DealLoaderStart = () => {
   return {
     type: actionTypes.LOADING_MORE_DEALS_START

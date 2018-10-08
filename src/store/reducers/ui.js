@@ -4,6 +4,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
   largeloading: false,
+  smalloading: false,
   loadingmoredeals: false
 };
 
@@ -12,6 +13,12 @@ const BigLoaderStart = state => {
 };
 const BigLoaderStop = state => {
   return updateObject(state, { largeloading: false });
+};
+const SmalLoaderStart = state => {
+  return updateObject(state, { smalloading: true });
+};
+const SmalLoaderStop = state => {
+  return updateObject(state, { smalloading: false });
 };
 const DealLoaderStart = state => {
   return updateObject(state, { loadingmoredeals: true });
@@ -26,6 +33,10 @@ const reducer = (state = initialState, action) => {
       return BigLoaderStart(state);
     case actionTypes.BIG_LOADER_STOP:
       return BigLoaderStop(state);
+    case actionTypes.SMALL_LOADER_START:
+      return SmalLoaderStart(state);
+    case actionTypes.SMALL_LOADER_STOP:
+      return SmalLoaderStop(state);
     case actionTypes.LOADING_MORE_DEALS_START:
       return DealLoaderStart(state);
     case actionTypes.LOADING_MORE_DEALS_STOP:
