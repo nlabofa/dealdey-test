@@ -29,6 +29,7 @@ class CheckOutScreen extends Component {
         <HeaderComponent
           leftContent={this.leftContent}
           rightContent={this.rightContent}
+          rightClick={() => Actions.pop()}
         />
         <View style={container}>
           <View style={viewStyle}>

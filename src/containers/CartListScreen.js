@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import testImage from "../assets/img/flix.png";
 import HeaderComponent from "../components/Header";
+import DealCard from "../components/DealCard";
 import { connect } from "react-redux";
 import * as actions from "../store/actions/index";
 import ListCard from "../components/ListCard";
@@ -18,6 +19,22 @@ import { Actions } from "react-native-router-flux";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
 
 class CartListScreen extends Component {
+  state = {
+    cartempty: false
+  };
+  componentDidMount() {
+    if (
+      this.props.cartdetail.cart &&
+      this.props.cartdetail.cart.cart_items_count === null
+    ) {
+      this.setState({
+        cartempty: true
+      });
+    } else {
+      console.log("cart not empty");
+      this.setState({ cartempty: false });
+    }
+  }
   renderFooter = () => {
     return (
       <View
@@ -27,6 +44,41 @@ class CartListScreen extends Component {
           borderColor: "#CED0CE"
         }}
       />
+    );
+  };
+  fetchDetails = (id, fetchVar) => {
+    if (fetchVar === 0) {
+      //variants_have_same_price is 0 i.e variants does not have same price hence we want to fetch the variant id seperately
+      this.props.getDealVariant(id);
+      this.props.FetchDealsDetails(id);
+      return;
+    } else {
+      this.props.FetchDealsDetails(id);
+    }
+  };
+  renderHeader = () => {
+    return (
+      <View>
+        <HeaderComponent
+          leftContent={this.leftContent}
+          rightContent={<Text />}
+        />
+        <View style={{ paddingHorizontal: "2%", marginBottom: 20 }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: "black",
+              paddingBottom: 10
+            }}
+          >
+            Oops!Your cart is empty
+          </Text>
+          <Text style={{ fontSize: 16 }}>
+            Your cart feels pretty empty.Here are some deals to get you started.
+          </Text>
+        </View>
+      </View>
     );
   };
   render() {
@@ -39,7 +91,8 @@ class CartListScreen extends Component {
       bottomHeader,
       underlineText,
       subTotalView,
-      progressBar
+      progressBar,
+      Emptycontainer
     } = styles;
     const {
       cartdetail,
@@ -59,7 +112,39 @@ class CartListScreen extends Component {
       </View>
     );
     this.rightContent = <Text style={underlineText}>continue shopping</Text>;
-    return largeloading ? (
+    const bestsellerdeal = cartdetail ? cartdetail.bestseller_deals : "";
+    console.log(bestsellerdeal);
+    const cartEmptyView = (
+      <View style={Emptycontainer}>
+        <View style={{ width: "100%" }}>
+          <FlatList
+            numColumns={2}
+            data={bestsellerdeal}
+            renderItem={({ item }) => (
+              <DealCard
+                key={item.id}
+                fetchDetails={() =>
+                  this.fetchDetails(
+                    item.id,
+                    item.least_priced_variant.variants_have_same_price
+                  )
+                }
+                img={item.image}
+                title={item.short_title}
+                listPrice={item.least_priced_variant.list_price}
+                discountedPrice={item.least_priced_variant.discounted_price}
+                location={item.hover_location}
+              />
+            )}
+            keyExtractor={item => item.id}
+            ListHeaderComponent={this.renderHeader}
+          />
+        </View>
+      </View>
+    );
+    return this.state.cartempty ? (
+      cartEmptyView
+    ) : largeloading ? (
       <View style={progressBar}>
         <ProgressBar sizeL="large" />
       </View>
@@ -118,6 +203,11 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: "2%"
   },
+  Emptycontainer: {
+    flex: 1,
+    backgroundColor: "#f8f8f8",
+    paddingHorizontal: "2%"
+  },
   normText: {
     color: "black",
     fontWeight: "500",
@@ -168,11 +258,14 @@ const styles = StyleSheet.create({
 
 const mapStateToprops = state => {
   return {
-    largeloading: state.ui.largeloading
+    largeloading: state.ui.largeloading,
+    cartdetail: state.cart.cartdetail
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
+    FetchDealsDetails: id => dispatch(actions.FetchDealsDetais(id)),
+    getDealVariant: id => dispatch(actions.getDealVariant(id)),
     proceedToCheckout: cart_id => dispatch(actions.getCheckOutDetail(cart_id)),
     removeItemFromCart: (cart_id, cart_item_id) =>
       dispatch(actions.removeItemFromCart(cart_id, cart_item_id))

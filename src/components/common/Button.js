@@ -10,7 +10,7 @@ const Button = ({ onPress, children, color, fullwidth }) => {
       style={[
         buttonStyle,
         fullwidth
-          ? { width: "100%", backgroundColor: color }
+          ? { width: "90%", marginHorizontal: "5%", backgroundColor: color }
           : { width: "45%", backgroundColor: color }
       ]}
     >
