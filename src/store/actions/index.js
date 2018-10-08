@@ -9,7 +9,8 @@ export {
   createUserInfo,
   getStateListing,
   getAreaListing,
-  createShippingAddress
+  createShippingAddress,
+  removeItemFromCart
 } from "./cartActions";
 
 export {

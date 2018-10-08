@@ -10,7 +10,7 @@ import {
 import testImage from "../assets/img/flix.png";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const listcard = ({ img, quantity, title, listPrice, fetchDetails }) => {
+const listcard = ({ img, quantity, title, listPrice, removeItem }) => {
   const {
     soldView,
     middleView,
@@ -24,7 +24,7 @@ const listcard = ({ img, quantity, title, listPrice, fetchDetails }) => {
   } = styles;
   let smallLoader = <ActivityIndicator size="large" color="red" />;
   return (
-    <TouchableOpacity onPress={fetchDetails} style={cardView}>
+    <View style={cardView}>
       <View style={ImageView}>
         <Image
           source={{ uri: img }}
@@ -58,10 +58,10 @@ const listcard = ({ img, quantity, title, listPrice, fetchDetails }) => {
           </View>
         </View>
       </View>
-      <View style={{ width: "5%" }}>
+      <TouchableOpacity onPress={removeItem} style={{ width: "5%" }}>
         <Icon name="ios-trash" size={30} color="#666666" />
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 const styles = StyleSheet.create({

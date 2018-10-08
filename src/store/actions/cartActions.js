@@ -192,6 +192,32 @@ export const addCart = (cart_id, contentData) => {
       });
   };
 };
+export const removeItemFromCart = (cart_id, cart_item_id) => {
+  return dispatch => {
+    dispatch(BigLoaderStart());
+    axios
+      .post(
+        `${apiURL}/carts/${cart_id}/cart_items/${cart_item_id}/remove?access_key=${apiKey}`
+      )
+      .then(response => {
+        dispatch(BigLoaderStop());
+        console.log(response.data);
+        if (response.data.success === true) {
+          console.log("item removed from cart success");
+          ItemAddedToCartSuccess(dispatch, response.data);
+        } else {
+          console.log("cart error occured");
+          console.log(response.data.error_message);
+        }
+      })
+      .catch(err => {
+        dispatch(BigLoaderStop());
+        console.log(err.response);
+        //console.log(err.response.data.message);
+        alert("An error occured");
+      });
+  };
+};
 
 export const addItemToCart = (cart_id, deal_id, variant_id, quantity) => {
   return dispatch => {

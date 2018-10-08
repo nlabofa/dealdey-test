@@ -41,7 +41,12 @@ class CartListScreen extends Component {
       subTotalView,
       progressBar
     } = styles;
-    const { cartdetail, largeloading, proceedToCheckout } = this.props;
+    const {
+      cartdetail,
+      largeloading,
+      proceedToCheckout,
+      removeItemFromCart
+    } = this.props;
     this.leftContent = (
       <View
         style={{
@@ -75,6 +80,9 @@ class CartListScreen extends Component {
                 quantity={item.quantity}
                 title={item.deal.short_title}
                 listPrice={item.unit_price}
+                removeItem={() =>
+                  removeItemFromCart(cartdetail.cart.id, item.id)
+                }
               />
             )}
             keyExtractor={item => item.deal.short_title}
@@ -165,8 +173,9 @@ const mapStateToprops = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    //deal_id, variant_id, quantity
-    proceedToCheckout: cart_id => dispatch(actions.getCheckOutDetail(cart_id))
+    proceedToCheckout: cart_id => dispatch(actions.getCheckOutDetail(cart_id)),
+    removeItemFromCart: (cart_id, cart_item_id) =>
+      dispatch(actions.removeItemFromCart(cart_id, cart_item_id))
   };
 };
 export default connect(
