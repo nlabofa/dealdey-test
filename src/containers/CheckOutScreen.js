@@ -4,6 +4,15 @@ import { Button } from "../components/common/index";
 import HeaderComponent from "../components/Header";
 import { Actions } from "react-native-router-flux";
 class CheckOutScreen extends Component {
+  proceedToCheckout = () => {
+    if (this.props.checkoutdetail.is_shippable === true) {
+      Actions.push("shippingform");
+      console.log("shippingform");
+    } else {
+      Actions.push("userform");
+      console.log("userform");
+    }
+  };
   render() {
     const {
       normText,
@@ -48,7 +57,7 @@ class CheckOutScreen extends Component {
         <View style={bottomHeader}>
           <Button
             fullwidth
-            onPress={() => Actions.push("userform")}
+            onPress={() => this.proceedToCheckout()}
             color="#e25902"
           >
             complete order

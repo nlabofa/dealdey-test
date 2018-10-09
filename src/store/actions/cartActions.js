@@ -313,7 +313,8 @@ export const createShippingAddress = (id, contentData, amount) => {
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          dispatch(completeOrder(id, amount));
+          dispatch(BigLoaderStop());
+          Actions.push("userform");
         } else {
           dispatch(BigLoaderStop());
           alert(response.data.cart.error_messages);
@@ -385,13 +386,8 @@ export const createUserInfo = (
       .post(`${apiURL}/carts/${cart_id}/user?access_key=${apiKey}`, postData)
       .then(response => {
         console.log(response.data);
-        if (is_shippable === false) {
-          console.log("proceed to order summary");
+        if (response.data.success) {
           dispatch(completeOrder(cart_id, total_amount));
-        } else {
-          dispatch(BigLoaderStop());
-          Actions.push("shippingform");
-          console.log("enter shipping address");
         }
       })
       .catch(err => {
