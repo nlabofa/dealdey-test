@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView
+} from "react-native";
 import { Button, Input, ProgressBar } from "../components/common";
 import HeaderComponent from "../components/Header";
 import { connect } from "react-redux";
@@ -20,7 +27,6 @@ class UserForm extends Component {
       normLText,
       viewStyle,
       progressBar,
-      subDetail,
       bottomHeader
     } = styles;
     const { createUser, checkoutdetail, largeloading } = this.props;
@@ -37,12 +43,19 @@ class UserForm extends Component {
           leftContent={this.leftContent}
           rightContent={this.rightContent}
         />
-        <View style={container}>
+        <ScrollView style={container}>
           <Text style={[normLText, { textAlign: "center" }]}>
             Fill In Your Info To Proceed
           </Text>
 
-          <View style={viewStyle}>
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.select({
+              ios: () => 0,
+              android: () => 0
+            })()}
+            style={viewStyle}
+          >
             <Input
               label="FirstName"
               placeholder="opeyemi"
@@ -62,8 +75,8 @@ class UserForm extends Component {
               //value={this.state.email}
             />
             <View />
-          </View>
-        </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
         <View style={bottomHeader}>
           <Button
             fullwidth
@@ -79,7 +92,7 @@ class UserForm extends Component {
             }
             color="#e25902"
           >
-            continue
+            CONTINUE
           </Button>
         </View>
       </View>

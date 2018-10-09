@@ -7,7 +7,6 @@ import { ProgressBar } from "../components/common/index";
 import { Actions } from "react-native-router-flux";
 import HeaderComponent from "../components/Header";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
-import Icon from "react-native-vector-icons/Ionicons";
 console.disableYellowBox = true;
 
 class HomeScreen extends Component {
@@ -16,13 +15,16 @@ class HomeScreen extends Component {
     dealsdata: null
   };
   componentDidMount() {
+    //initialises empty cart and fetches the deals on load
     this.props.createCart();
     this.props.InitDeals();
   }
   componentWillReceiveProps(nextProps) {
+    //if deals was fetched successfully set the data to state.
     if (nextProps.dealsdata !== null) {
       this.setState({ dealsdata: nextProps.dealsdata });
     }
+    //this is for infinite scroll/load more. when new data is fetched spread the new data into the previous state data
     if (
       nextProps.moredealsdata !== null &&
       nextProps.moredealsdata !== this.props.moredealsdata
@@ -55,8 +57,9 @@ class HomeScreen extends Component {
       </View>
     );
   };
+  //this fetches more data  when a user scroll to a certain point on the page
   handleLoadMore = () => {
-    console.log("end reached..loading more..");
+    //console.log("end reached..loading more..");
     this.setState(
       {
         page: this.state.page + 1
@@ -66,12 +69,14 @@ class HomeScreen extends Component {
       }
     );
   };
+  //this is for pull down to refresh. this reloads the initial data
   handleRefresh = () => {
     this.props.InitDeals();
   };
+  //this fetch the details of the deal clicked
   fetchDetails = (id, fetchVar) => {
     if (fetchVar === 0) {
-      //variants_have_same_price is 0 i.e variants does not have same price hence we want to fetch the variant id seperately
+      //if variants_have_same_price is 0 i.e variants does not have same price hence we want to fetch the variant id seperately
       this.props.getDealVariant(id);
       this.props.FetchDealsDetails(id);
       return;
@@ -110,7 +115,7 @@ class HomeScreen extends Component {
       </View>
     ) : (
       <View style={container}>
-        <View style={{ width: "100%" /*backgroundColor: "red"*/ }}>
+        <View style={{ width: "100%" }}>
           <FlatList
             numColumns={2}
             data={dealsdata}

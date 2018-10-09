@@ -5,12 +5,12 @@ import HeaderComponent from "../components/Header";
 import { Actions } from "react-native-router-flux";
 class CheckOutScreen extends Component {
   proceedToCheckout = () => {
+    //if the cart contains a shippable item, we want to show the shipping form first.
     if (this.props.checkoutdetail.is_shippable === true) {
       Actions.push("shippingform");
-      console.log("shippingform");
     } else {
+      //else we want to show the userform
       Actions.push("userform");
-      console.log("userform");
     }
   };
   render() {
@@ -60,7 +60,7 @@ class CheckOutScreen extends Component {
             onPress={() => this.proceedToCheckout()}
             color="#e25902"
           >
-            complete order
+            COMPLETE ORDER
           </Button>
         </View>
       </View>

@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { connect } from "react-redux";
 import * as actions from "../store/actions/index";
 import testImage from "../assets/img/flix.png";
+import { Actions } from "react-native-router-flux";
 import HeaderComponent from "../components/Header";
 import { Button, ProgressBar } from "../components/common/index";
-
+import ImageLoad from "react-native-image-placeholder";
 import shoppingcartImage from "../assets/img/shopping-cart.png";
 
 class DealDetailScreen extends Component {
@@ -46,12 +47,14 @@ class DealDetailScreen extends Component {
         ) : null}
       </View>
     );
-
+    //decides the variant_id to use
     const variant_id =
       dealdetail.variants_have_same_price == true
         ? dealdetail.master_variant_id
         : variantdetail.variants[0].id;
+    //saves cart id
     const cart_id = cartdetail.cart.id;
+
     return largeloading ? (
       <View style={progressBar}>
         <ProgressBar sizeL="large" />
@@ -61,18 +64,28 @@ class DealDetailScreen extends Component {
         <HeaderComponent
           leftContent={this.leftContent}
           rightContent={this.rightContent}
+          rightClick={() => Actions.push("cartlist")}
         />
         <View style={container}>
           <View style={sliderDiv}>
-            <Image
+            {/*<Image
               source={{ uri: dealdetail.main_image }}
               style={{
                 width: "90%",
                 height: "100%"
               }}
-              loadingIndicatorSource={testImage}
+              //loadingIndicatorSource={testImage}
               defaultSource={testImage}
               resizeMode="cover"
+            />*/}
+            <ImageLoad
+              style={{
+                width: "90%",
+                height: "100%"
+              }}
+              loadingStyle={{ size: "large", color: "#2bac46" }}
+              source={{ uri: dealdetail.main_image }}
+              //placeholderSource={testImage}
             />
           </View>
           <Text style={productName}>{dealdetail.short_title}</Text>
@@ -101,13 +114,13 @@ class DealDetailScreen extends Component {
         </View>
         <View style={bottomHeader}>
           <Button onPress={() => console.log("pressed")} color="#e25902">
-            Buy now
+            BUY NOW
           </Button>
           <Button
             onPress={() => addItemToCart(cart_id, dealdetail.id, variant_id, 1)}
             color="#d0d0d0"
           >
-            add to cart
+            ADD TO CART
           </Button>
         </View>
       </View>

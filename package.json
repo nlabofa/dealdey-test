@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "react": "16.5.0",
     "react-native": "0.57.1",
+    "react-native-image-placeholder": "^1.0.14",
     "react-native-router-flux": "^4.0.4",
     "react-native-vector-icons": "^5.0.0",
     "react-redux": "^5.0.7",

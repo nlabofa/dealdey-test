@@ -8,16 +8,19 @@ class ShippingForm extends Component {
   state = {
     locationlist: null,
     areaListFetched: false,
-    areaname: "Amuwo-Odofin",
-    stateid: 8
+    areaname: "Amuwo-Odofin", //default area name.
+    stateid: 8 //default state i.e Lagos
   };
   componentDidMount = () => {
+    //fetch the states and prefill the state picker
     this.props.getStateListing();
   };
   componentWillReceiveProps(nextProps) {
     if (nextProps.locationlist !== null) {
+      //if states or areas details have been fetched, save details to locationlist state
       this.setState({ locationlist: nextProps.locationlist });
     }
+    //if arealist was fetched .set the state to true. This is used for changing between state and areas view.
     if (nextProps.arealistfetched === true) {
       this.setState({
         areaListFetched: true
@@ -58,11 +61,13 @@ class ShippingForm extends Component {
         area: areaname
       }
     };
+    //default render button view
     let renderButton = (
       <Button fullwidth onPress={() => getAreaListing(stateid)} color="#e25902">
-        Find Area
+        FIND AREA
       </Button>
     );
+    //if areas has been fetched. change the renderbutton .
     if (areaListFetched === true) {
       renderButton = (
         <Button
@@ -76,10 +81,11 @@ class ShippingForm extends Component {
           }
           color="#e25902"
         >
-          continue
+          CONTINUE
         </Button>
       );
     }
+    //this is for changing the dropdown between states and areas
     if (locationlist !== null && areaListFetched === true) {
       AreaItem = locationlist.map(item => (
         <Picker.Item key={item.id} label={item.name} value={item.name} />
@@ -127,7 +133,11 @@ class ShippingForm extends Component {
                     onValueChange={itemValue =>
                       this.setState({ areaname: itemValue })
                     }
-                    style={{ width: 120 }}
+                    style={{
+                      width: 120,
+                      borderwidth: 1,
+                      borderColor: "#f8f8f8"
+                    }}
                   >
                     {AreaItem}
                   </Picker>
@@ -135,9 +145,15 @@ class ShippingForm extends Component {
                   <Picker
                     selectedValue={stateid}
                     onValueChange={itemValue =>
-                      this.setState({ stateid: itemValue })
+                      this.setState({
+                        stateid: itemValue
+                      })
                     }
-                    style={{ width: 120 }}
+                    style={{
+                      width: 120,
+                      borderwidth: 1,
+                      borderColor: "#f8f8f8"
+                    }}
                   >
                     {StateItem}
                   </Picker>

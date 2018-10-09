@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import testImage from "../assets/img/flix.png";
 import Icon from "react-native-vector-icons/Ionicons";
+import ImageLoad from "react-native-image-placeholder";
 
 const listcard = ({ img, quantity, title, listPrice, removeItem }) => {
   const {
@@ -26,12 +27,18 @@ const listcard = ({ img, quantity, title, listPrice, removeItem }) => {
   return (
     <View style={cardView}>
       <View style={ImageView}>
-        <Image
+        {/*<Image
           source={{ uri: img }}
           resizeMode="cover"
-          loadingIndicatorSource={testImage}
+          //loadingIndicatorSource={testImage}
           defaultSource={testImage}
           style={testImageStyle}
+        />*/}
+        <ImageLoad
+          style={testImageStyle}
+          loadingStyle={{ size: "large", color: "#2bac46" }}
+          source={{ uri: img }}
+          //placeholderSource={testImage}
         />
       </View>
       <View style={middleView}>

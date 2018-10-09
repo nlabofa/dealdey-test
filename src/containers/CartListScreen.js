@@ -23,6 +23,7 @@ class CartListScreen extends Component {
     cartempty: false
   };
   componentDidMount() {
+    //this checks whether the cart is empty. if it is empty we want to show a seperate view
     if (
       this.props.cartdetail.cart &&
       this.props.cartdetail.cart.cart_items_count === null
@@ -31,7 +32,6 @@ class CartListScreen extends Component {
         cartempty: true
       });
     } else {
-      console.log("cart not empty");
       this.setState({ cartempty: false });
     }
   }
@@ -41,14 +41,15 @@ class CartListScreen extends Component {
         style={{
           paddingVertical: 20,
           borderTopWidth: 1,
-          borderColor: "#CED0CE"
+          borderColor: "#e8e8e8"
         }}
       />
     );
   };
+  //get deals details. for empty cart view
   fetchDetails = (id, fetchVar) => {
     if (fetchVar === 0) {
-      //variants_have_same_price is 0 i.e variants does not have same price hence we want to fetch the variant id seperately
+      //if variants_have_same_price is 0 i.e variants does not have same price hence we want to fetch the variant id seperately
       this.props.getDealVariant(id);
       this.props.FetchDealsDetails(id);
       return;
@@ -56,6 +57,7 @@ class CartListScreen extends Component {
       this.props.FetchDealsDetails(id);
     }
   };
+  //render header. for empty cart view
   renderHeader = () => {
     return (
       <View>
@@ -112,8 +114,9 @@ class CartListScreen extends Component {
       </View>
     );
     this.rightContent = <Text style={underlineText}>continue shopping</Text>;
+    //fetch the deals to render if cart is empty
     const bestsellerdeal = cartdetail ? cartdetail.bestseller_deals : "";
-    console.log(bestsellerdeal);
+    //what to display for empty cart view
     const cartEmptyView = (
       <View style={Emptycontainer}>
         <View style={{ width: "100%" }}>
@@ -187,7 +190,7 @@ class CartListScreen extends Component {
             fullwidth
             color="#e25902"
           >
-            proceed to checkout
+            PROCEED TO CHECKOUT
           </Button>
         </View>
       </View>

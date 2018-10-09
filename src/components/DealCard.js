@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import testImage from "../assets/img/flix.png";
 import Icon from "react-native-vector-icons/Ionicons";
+import ImageLoad from "react-native-image-placeholder";
 
 const dealcard = ({
   img,
@@ -31,12 +32,18 @@ const dealcard = ({
   let smallLoader = <ActivityIndicator size="large" color="red" />;
   return (
     <TouchableOpacity onPress={fetchDetails} style={cardView}>
-      <Image
+      {/*<Image
         source={{ uri: img }}
         resizeMode="contain"
-        loadingIndicatorSource={testImage}
+        //loadingIndicatorSource={testImage}
         defaultSource={testImage}
         style={testImageStyle}
+      />*/}
+      <ImageLoad
+        style={testImageStyle}
+        loadingStyle={{ size: "large", color: "#2bac46" }}
+        source={{ uri: img }}
+        //placeholderSource={testImage}
       />
       <Text style={headTitle}>{title}</Text>
       <View style={priceView}>
@@ -69,7 +76,8 @@ const styles = StyleSheet.create({
   },
   testImageStyle: {
     width: "100%",
-    height: 100
+    height: 100,
+    resizeMode: "cover"
   },
   headTitle: {
     color: "#666666",
