@@ -134,9 +134,7 @@ class ShippingForm extends Component {
                       this.setState({ areaname: itemValue })
                     }
                     style={{
-                      width: 120,
-                      borderwidth: 1,
-                      borderColor: "#f8f8f8"
+                      width: 120
                     }}
                   >
                     {AreaItem}
@@ -150,9 +148,7 @@ class ShippingForm extends Component {
                       })
                     }
                     style={{
-                      width: 120,
-                      borderwidth: 1,
-                      borderColor: "#f8f8f8"
+                      width: 120
                     }}
                   >
                     {StateItem}
